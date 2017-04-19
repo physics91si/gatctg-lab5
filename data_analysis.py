@@ -15,7 +15,13 @@ def main():
     packet, call clean_data() to apply a low pass filter to the data and
     finally plot the result."""
     #TODO add your code here
-
+    x = np.arange(0, 10, 0.1)
+    plt.plot(x,noisy_packet(x, 5, 1, 0.02))
+    plt.show()
+    
+    #clean_data(x, wavepacket(x, 5, 1)))
+    plt.plot(x,clean_data(x, noisy_packet(x, 5, 1, 0.02)))
+    plt.show()
 
 def noisy_packet(x_values, k, sigma, noise_amplitude):
     """This function returns a noisy Gaussian wavepacket with wave
@@ -30,7 +36,12 @@ def clean_data(x_values,y_values):
     transform on it, filter out the high frequency noise, transform the
     signal back into real space, and return it."""
 
-    pass #TODO add your code here
-    #return y_clean
+    yfreq = np.fft.rfft(y_values)
+    for index, i in enumerate(yfreq):
+        if yfreq.size*1/4 < index:
+            yfreq[index] = 0
+    y_clean = np.fft.irfft(yfreq)
+
+    return y_clean
 
 main()  # calls your main function
